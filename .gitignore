@@ -1,6 +1,18 @@
 # Compiled class file
 *.class
 
+*.class
+.DS_Store
+
+/build
+/out
+/.gradle
+/.idea
+/*.iml
+
+ckeditor
+MANIFEST.MF
+
 # Log file
 *.log
 
