@@ -1,5 +1,6 @@
 package com.doopp.gauss.server.netty;
 
+import com.doopp.gauss.api.grpc.AccountGrpcImpl;
 import com.doopp.gauss.api.service.impl.AccountServiceImpl;
 import com.doopp.gauss.server.application.ApplicationProperties;
 import com.google.inject.Injector;
@@ -27,7 +28,7 @@ public class NettyServer {
     /* The port on which the server should run */
 		int port = applicationProperties.i("server.port");
 		server = ServerBuilder.forPort(port)
-				.addService(new AccountServiceImpl())
+				.addService(injector.getInstance(AccountGrpcImpl.class))
 				.build()
 				.start();
 		logger.info("Server started, listening on " + port);

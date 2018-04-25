@@ -1,12 +1,36 @@
 package com.doopp.gauss.api.service.impl;
 
 
-class AccountServiceImpl extends GreeterGrpc.GreeterImplBase {
+import com.doopp.gauss.api.service.AccountService;
+import com.doopp.gauss.common.dao.UserDao;
+import com.doopp.gauss.common.entity.User;
+import com.google.inject.Inject;
+
+public class AccountServiceImpl implements AccountService {
+
+    @Inject
+    private UserDao userDao;
 
     @Override
-    public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
-        HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
-        responseObserver.onNext(reply);
-        responseObserver.onCompleted();
+    public User getUserOnLogin(String account, String password) {
+        User user = userDao.fetchByAccount(account);
+        if (user==null) {
+            return null;
+        }
+        String hasPassword = user.encryptPassword(password);
+        if (!user.getPassword().equals(hasPassword)) {
+            return null;
+        }
+        return user;
+    }
+
+    @Override
+    public User getUserOnRegister(String account, String password) {
+        return null;
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        return userDao.fetchByAccount(name);
     }
 }
